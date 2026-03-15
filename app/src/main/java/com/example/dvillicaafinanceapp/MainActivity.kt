@@ -17,27 +17,35 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.LibraryBooks
+import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.filled.LocalGasStation
+import androidx.compose.material.icons.filled.LocalCafe
+import androidx.compose.material.icons.filled.Devices
+import androidx.compose.material.icons.filled.LibraryBooks
+import androidx.compose.material.icons.filled.MenuBook
+import androidx.compose.material.icons.filled.Restaurant
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LeadingIconTab
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.modifier.modifierLocalOf
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -76,16 +84,74 @@ val transactions = listOf(
     Transaction("Supermarket", "Groceries",
         45.99, "10:30 AM", icon = Icons.Default.ShoppingCart),
     Transaction("Gas Station", "Fuel",
-        -30.5, "12:15 PM", icon = Icons.Default.ShoppingCart),
+        -30.5, "12:15 PM", icon = Icons.Default.LocalGasStation),
     Transaction("Coffee Shop", "Food & Drinks",
-        5.75, "8:00 AM", icon = Icons.Default.ShoppingCart),
+        5.75, "8:00 AM", icon = Icons.Default.LocalCafe),
     Transaction("Electronic Store", "Electronics",
-        120.00, "3:45 PM", icon = Icons.Default.ShoppingCart),
+        120.00, "3:45 PM", icon = Icons.Default.Devices),
     Transaction("Bookstore", "Books",
-        25.99, "2:00 PM", icon = Icons.Default.ShoppingCart),
+        25.99, "2:00 PM", icon = Icons.AutoMirrored.Filled.MenuBook
+    ),
     Transaction("Restaurant", "Dining",
-        60.00, "7:30 PM", icon = Icons.Default.ShoppingCart)
+        60.00, "7:30 PM", icon = Icons.Default.Restaurant)
 )
+
+@Composable
+fun TransactionItem(transaction: Transaction){
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp, vertical = 12.dp)
+            .clip(RoundedCornerShape(20.dp))
+            .background(color = Color.White)
+            .height(60.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Box(
+            modifier = Modifier
+                .padding(start = 10.dp)
+                .size(40.dp)
+                .clip(CircleShape)
+                .background(Color.Black),
+            contentAlignment = Alignment.Center
+        ){
+            Icon(
+                imageVector = transaction.icon,
+                contentDescription = transaction.category,
+                tint = Color.White,
+                modifier = Modifier.size(22.dp)
+            )
+        }
+        Spacer(modifier = Modifier.width(12.dp))
+        Column(
+            modifier = Modifier.weight(1f) //esto hace que tengan el
+        // tamaño entre los componentes equilibrado
+        ) {
+            Text(text = transaction.storeName,
+                //fontSize = 15.sp,
+                fontWeight = FontWeight.Bold)
+            Text(text = transaction.category,
+                fontWeight = FontWeight.Medium,
+                color = Color.Gray,
+                fontSize = 14.sp)
+                //modifier = Modifier.padding(top = 10.dp))
+        }
+        Column(
+            horizontalAlignment = Alignment.End,
+            modifier = Modifier.padding(end = 10.dp)
+        ) {
+            Text(
+                text = "$${transaction.amount}"
+            )
+
+            Text(
+                text = transaction.time,
+                color = Color.Gray,
+                fontSize = 12.sp
+            )
+        }
+    }
+}
 @Composable
 fun HomeScreen(innerPadding: PaddingValues){
     Column(
@@ -117,7 +183,9 @@ fun HomeScreen(innerPadding: PaddingValues){
                         .size(50.dp)
                 )
             }
-            Column() {
+            Column(
+                modifier = Modifier.padding(start = 8.dp)
+            ) {
                 Text(text = "Hola, ${user.name}",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold)
@@ -218,7 +286,7 @@ fun HomeScreen(innerPadding: PaddingValues){
             }
 
         }
-        //Transacciones
+        //Título "Transactions"
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -236,7 +304,11 @@ fun HomeScreen(innerPadding: PaddingValues){
                 modifier = Modifier.padding(end = 20.dp)
             )
         }
+        //Transacciones con Lazy Column
+        LazyColumn() {
+            items(transactions){transaction -> TransactionItem((transaction))}
 
+        }
     }
 }
 
