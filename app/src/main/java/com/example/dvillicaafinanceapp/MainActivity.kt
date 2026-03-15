@@ -23,6 +23,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -61,7 +62,30 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+val user = User(
+    name = "Deborah",
+    balance = 280.99
+)
 
+val summaryCards = listOf(
+    SummaryCard("Ventas", 280.99, naranjaPastel),
+    SummaryCard("Ganancias", 280.99, moradoPastel)
+)
+
+val transactions = listOf(
+    Transaction("Supermarket", "Groceries",
+        45.99, "10:30 AM", icon = Icons.Default.ShoppingCart),
+    Transaction("Gas Station", "Fuel",
+        -30.5, "12:15 PM", icon = Icons.Default.ShoppingCart),
+    Transaction("Coffee Shop", "Food & Drinks",
+        5.75, "8:00 AM", icon = Icons.Default.ShoppingCart),
+    Transaction("Electronic Store", "Electronics",
+        120.00, "3:45 PM", icon = Icons.Default.ShoppingCart),
+    Transaction("Bookstore", "Books",
+        25.99, "2:00 PM", icon = Icons.Default.ShoppingCart),
+    Transaction("Restaurant", "Dining",
+        60.00, "7:30 PM", icon = Icons.Default.ShoppingCart)
+)
 @Composable
 fun HomeScreen(innerPadding: PaddingValues){
     Column(
@@ -94,7 +118,7 @@ fun HomeScreen(innerPadding: PaddingValues){
                 )
             }
             Column() {
-                Text(text = "Hola, Deborah",
+                Text(text = "Hola, ${user.name}",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold)
                 Text(text = "Bienvenida",
@@ -155,7 +179,7 @@ fun HomeScreen(innerPadding: PaddingValues){
                         .weight(1f)
                         .fillMaxWidth(),
                     shape = RoundedCornerShape(20.dp),
-                    colors = CardDefaults.cardColors(containerColor = naranjaPastel)
+                    colors = CardDefaults.cardColors(containerColor = summaryCards[0].backgroundColor)
                 ) {
                     Box(
                         modifier = Modifier.fillMaxSize(),
@@ -164,8 +188,10 @@ fun HomeScreen(innerPadding: PaddingValues){
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text("Ventas", color = Color.Gray)
-                            Text("$280.99", fontWeight = FontWeight.Bold)
+                            Text(
+                                text = summaryCards[0].title, color = Color.Gray
+                            )
+                            Text("$${summaryCards[0].amount}", fontWeight = FontWeight.Bold)
                         }
                     }
                 }
@@ -175,7 +201,7 @@ fun HomeScreen(innerPadding: PaddingValues){
                         .weight(1f)
                         .fillMaxWidth(),
                     shape = RoundedCornerShape(20.dp),
-                    colors = CardDefaults.cardColors(containerColor = moradoPastel)
+                    colors = CardDefaults.cardColors(containerColor = summaryCards[1].backgroundColor)
                 ) {
                     Box(
                         modifier = Modifier.fillMaxSize(),
@@ -184,13 +210,31 @@ fun HomeScreen(innerPadding: PaddingValues){
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text("Ganancias", color = Color.Gray)
-                            Text("$280.99", fontWeight = FontWeight.Bold)
+                            Text(text = summaryCards[1].title, color = Color.Gray)
+                            Text("$${summaryCards[1].amount}", fontWeight = FontWeight.Bold)
                         }
                     }
                 }
             }
 
+        }
+        //Transacciones
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 20.dp)
+        ){
+            Text(
+                text = "Transactions",
+                fontWeight = FontWeight.Bold,
+                fontSize = 20.sp,
+                modifier = Modifier.weight(1f))
+            Text(
+                text = "See All",
+                color = Color.Gray,
+                fontSize = 20.sp,
+                modifier = Modifier.padding(end = 20.dp)
+            )
         }
 
     }
