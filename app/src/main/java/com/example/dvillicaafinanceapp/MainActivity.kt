@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -20,7 +21,10 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LeadingIconTab
@@ -32,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.modifier.modifierLocalOf
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -41,9 +46,6 @@ import com.example.dvillicaafinanceapp.ui.theme.naranjaPastel
 import com.example.dvillicaafinanceapp.ui.theme.verdePastel
 import com.example.dvillicaafinanceapp.ui.theme.moradoPastel
 import com.example.dvillicaafinanceapp.ui.theme.fondo
-
-
-
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,18 +61,12 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
 
 @Composable
 fun HomeScreen(innerPadding: PaddingValues){
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
             .background(fondo)
             .padding(paddingValues = innerPadding)
     ) {
@@ -101,7 +97,7 @@ fun HomeScreen(innerPadding: PaddingValues){
                 Text(text = "Hola, Deborah",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold)
-                Text(text = "Bienvenido",
+                Text(text = "Bienvenida",
                     fontWeight = FontWeight.Medium,
                     color = Color.Gray,
                     modifier = Modifier.padding(top = 10.dp))
@@ -113,10 +109,88 @@ fun HomeScreen(innerPadding: PaddingValues){
                 ){
                 Icon(
                     imageVector =Icons.Default.Menu,
-                    contentDescription = "Menú",
+                    contentDescription = "Menu",
                     modifier = Modifier.size(35.dp)
                 )
             }
+        }
+        //Tarjetas de resumen
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(20.dp)
+        ) {
+            Card(
+                modifier = Modifier
+                    .height(250.dp)
+                    .weight(1f),
+                shape = RoundedCornerShape(20.dp),
+                colors = CardDefaults.cardColors(containerColor = verdePastel)
+            ) {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Face,
+                        contentDescription = "userActivity",
+                        modifier = Modifier.size(30.dp)
+                    )
+                    Text(text = "Actividad",
+                        fontWeight = FontWeight.Bold)
+                    Text(text = "de la Semana",
+                        fontWeight = FontWeight.Medium,
+                        color = Color.Gray)
+                }
+
+            }
+            Spacer(modifier = Modifier.width(16.dp))
+            Column(modifier = Modifier
+                .weight(1f)
+                .height(250.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                Card(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth(),
+                    shape = RoundedCornerShape(20.dp),
+                    colors = CardDefaults.cardColors(containerColor = naranjaPastel)
+                ) {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Text("Ventas", color = Color.Gray)
+                            Text("$280.99", fontWeight = FontWeight.Bold)
+                        }
+                    }
+                }
+
+                Card(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth(),
+                    shape = RoundedCornerShape(20.dp),
+                    colors = CardDefaults.cardColors(containerColor = moradoPastel)
+                ) {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Text("Ganancias", color = Color.Gray)
+                            Text("$280.99", fontWeight = FontWeight.Bold)
+                        }
+                    }
+                }
+            }
+
         }
 
     }
